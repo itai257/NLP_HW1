@@ -8,7 +8,7 @@ import numpy as np
 
 threshold = 10
 
-train_path = "datashare/hw1/train1.wtag"
+train_path = "../datashare/hw1/train1.wtag"
 
 # Statistics
 statistics = feature_statistics_class()
