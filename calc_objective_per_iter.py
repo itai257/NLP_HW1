@@ -36,12 +36,13 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
             f_xi_yTag = rel_features_for_all_tags_hist[h]
 
             v_mul_f_xi_yTag = sum(w_i[f_xi_yTag])
-            inside_log_calc += np.exp(v_mul_f_xi_yTag)  ########### <- check all_tags_reps
+            exp = np.exp(v_mul_f_xi_yTag)
+            inside_log_calc += exp
 
             # Expected Count:
             p_yTag_xi_v = math.pow(math.e, v_mul_f_xi_yTag)
 
-            expected_counts_temp[f_xi_yTag] += p_yTag_xi_v  ########### <- check all_tags_reps
+            expected_counts_temp[f_xi_yTag] += p_yTag_xi_v
 
         normalization_term += np.log(inside_log_calc) * reps
         expected_counts_temp /= inside_log_calc
