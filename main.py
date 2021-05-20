@@ -5,10 +5,12 @@ from collections import OrderedDict
 from scipy.optimize import fmin_l_bfgs_b
 from calc_objective_per_iter import calc_objective_per_iter
 import numpy as np
+import time
 
 threshold = 10
-
+start1 = time.time()
 train_path = "/datashare/hw1/train1.wtag"
+#train_path = "data/train1.wtag"
 
 # Statistics
 statistics = feature_statistics_class()
@@ -75,9 +77,12 @@ for hist, reps in histories.items():
 
 n_total_features = feature2id.n_total_features
 w_0 = np.zeros(n_total_features, dtype=np.float32)
-args = (feature2id, histories, relevant_features_for_idx, all_tags_histories, rel_features_for_all_tags_hist)
+args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist)
 
 optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
 weights = optimal_params[0]
 print("weights:")
 print(weights)
+end1 = time.time()
+print("total time:")
+print(end1 - start1)

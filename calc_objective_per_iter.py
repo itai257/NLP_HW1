@@ -5,7 +5,7 @@ import numpy as np
 from represent_input_with_features import represent_input_with_features
 import time
 
-def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags_histories, rel_features_for_all_tags_hist):
+def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags, rel_features_for_all_tags_hist):
     """
         Calculate max entropy likelihood for an iterative optimization method
   #      :param w_i: weights vector in iteration i
@@ -14,8 +14,6 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
             The function returns the Max Entropy likelihood (objective) and the objective gradient
     """
     start = time.time()
-    print("start time:")
-    print(start)
     w_i = np.array(w_i)
     lamda = 2  # TBD
     empirical_counts = np.zeros(feature2id.n_total_features)
@@ -33,16 +31,17 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
         """ Normalization Term: """
         inside_log_calc = 0
         expected_counts_temp = np.zeros(feature2id.n_total_features)
-        for all_tags_hist, all_tags_reps in all_tags_histories.items():  # TBD: need to find more tags ?
-            f_xi_yTag = rel_features_for_all_tags_hist[all_tags_hist]
+        for tag in all_tags:  # TBD: need to find more tags ?
+            h = (history[0], history[1], history[2], tag, history[4], history[5])
+            f_xi_yTag = rel_features_for_all_tags_hist[h]
 
             v_mul_f_xi_yTag = sum(w_i[f_xi_yTag])
-            inside_log_calc += np.exp(v_mul_f_xi_yTag) * all_tags_reps ########### <- check all_tags_reps
+            inside_log_calc += np.exp(v_mul_f_xi_yTag)  ########### <- check all_tags_reps
 
             # Expected Count:
             p_yTag_xi_v = math.pow(math.e, v_mul_f_xi_yTag)
 
-            expected_counts_temp[f_xi_yTag] += p_yTag_xi_v * all_tags_reps ########### <- check all_tags_reps
+            expected_counts_temp[f_xi_yTag] += p_yTag_xi_v  ########### <- check all_tags_reps
 
         normalization_term += np.log(inside_log_calc) * reps
         expected_counts_temp /= inside_log_calc
@@ -54,8 +53,6 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
     grad = empirical_counts - expected_counts - regularization_grad  # (2)
 
     end = time.time()
-    print("end  time:")
-    print(end)
-    print("duration  time:")
+    print("calc_objective_per_iter iteration time:")
     print(end - start)
     return (-1) * likelihood, (-1) * grad
