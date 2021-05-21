@@ -36,7 +36,7 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
             f_xi_yTag = rel_features_for_all_tags_hist[h]
 
             v_mul_f_xi_yTag = sum(w_i[f_xi_yTag])
-            exp = math.exp(math.e, v_mul_f_xi_yTag)
+            exp = math.exp(v_mul_f_xi_yTag)
             inside_log_calc += exp
 
             # Expected Count:
