@@ -46,7 +46,7 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
             inside_log_calc += exp
 
             # Expected Count:
-            p_yTag_xi_v = math.pow(math.e, v_mul_f_xi_yTag)
+            p_yTag_xi_v = np.exp(v_mul_f_xi_yTag)  # can be reused with exp
 
             expected_counts_temp[f_xi_yTag] += p_yTag_xi_v
 
