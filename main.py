@@ -5,6 +5,7 @@ from collections import OrderedDict
 from scipy.optimize import fmin_l_bfgs_b
 from calc_objective_per_iter import calc_objective_per_iter
 import numpy as np
+import pickle
 import time
 
 threshold = 10
@@ -85,3 +86,7 @@ print(weights)
 end1 = time.time()
 print("total time:")
 print(end1 - start1)
+
+weights_path = 'trained_weights/trained_weights_data_train1.pkl'
+with open(weights_path, 'wb') as f:
+    pickle.dump(optimal_params, f)
