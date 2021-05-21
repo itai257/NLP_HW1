@@ -8,6 +8,13 @@ import numpy as np
 import pickle
 import time
 
+# Remove:
+temp_vec = np.zeros(3)
+dummy_path = 'trained_weights/dummy.pkl'
+with open(dummy_path, 'wb') as f:
+    pickle.dump(temp_vec, f)
+#
+
 threshold = 10
 start1 = time.time()
 train_path = "/datashare/hw1/train1.wtag"
