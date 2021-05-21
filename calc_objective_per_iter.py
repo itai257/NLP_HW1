@@ -17,7 +17,7 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
     print(w_i)
     start = time.time()
     w_i = np.array(w_i)
-    lamda = 0.5  # TBD
+    lamda = 0.2  # TBD
     empirical_counts = np.zeros(feature2id.n_total_features)
     expected_counts = np.zeros(feature2id.n_total_features)
     normalization_term, linear_term = 0, 0
@@ -38,11 +38,7 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
             f_xi_yTag = rel_features_for_all_tags_hist[h]
 
             v_mul_f_xi_yTag = sum(w_i[f_xi_yTag])
-            try:
-                exp = np.exp(v_mul_f_xi_yTag)
-            except OverflowError:
-                print("v_mul_f_xi_yTag=" +v_mul_f_xi_yTag)
-                exit(1)
+            exp = np.exp(v_mul_f_xi_yTag)
             inside_log_calc += exp
 
             # Expected Count:
