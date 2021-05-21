@@ -1,8 +1,6 @@
 import math
 from collections import OrderedDict
 import numpy as np
-global iter_count
-
 
 from represent_input_with_features import represent_input_with_features
 import time
@@ -17,9 +15,6 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
     """
     print("Weights for current iteration:")
     print(w_i)
-    print("current iteration:")
-    print(iter_count)
-    iter_count += 1
     start = time.time()
     w_i = np.array(w_i)
     lamda = 2  # TBD
