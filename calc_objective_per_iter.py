@@ -4,7 +4,8 @@ import numpy as np
 
 from represent_input_with_features import represent_input_with_features
 import time
-
+global iter_count
+iter_count = 0
 def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags, rel_features_for_all_tags_hist):
     """
         Calculate max entropy likelihood for an iterative optimization method
@@ -13,6 +14,11 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
 
             The function returns the Max Entropy likelihood (objective) and the objective gradient
     """
+    print("Weights for current iteration:")
+    print(w_i)
+    print("current iteration:")
+    print(iter_count)
+    iter_count += 1
     start = time.time()
     w_i = np.array(w_i)
     lamda = 2  # TBD
