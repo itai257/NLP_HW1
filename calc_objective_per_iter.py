@@ -1,11 +1,12 @@
 import math
 from collections import OrderedDict
 import numpy as np
+global iter_count
+
 
 from represent_input_with_features import represent_input_with_features
 import time
-global iter_count
-iter_count = 0
+
 def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags, rel_features_for_all_tags_hist):
     """
         Calculate max entropy likelihood for an iterative optimization method

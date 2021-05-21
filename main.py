@@ -73,7 +73,7 @@ for hist, reps in histories.items():
         else:
             all_tags_histories[h] += reps  ##
 
-
+iter_count = 0
 
 n_total_features = feature2id.n_total_features
 w_0 = np.zeros(n_total_features, dtype=np.float32)
