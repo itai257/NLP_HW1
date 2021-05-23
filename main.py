@@ -35,7 +35,7 @@ relevant_features_for_idx = dict()
 all_tags = statistics.feature_105_dict.keys()
 
 
-histories = dict()
+histories = []
 with open(train_path) as f:
     for line in f:
         splited_words = line.replace('\n', ' ').split(' ')
@@ -44,8 +44,8 @@ with open(train_path) as f:
         for word_idx in range(len(splited_words)):
             cur_word, cur_tag = splited_words[word_idx].split('_')
             h = (cur_word, pptag, ptag, cur_tag, '', '')
-            if h not in histories:
-                histories[h] = 1
+            histories.append(h)
+            if h not in relevant_features_for_idx:
                 relevant_features_for_idx[h] = (represent_input_with_features(
                     h,
                     feature2id.words_tags_dict,
@@ -54,14 +54,12 @@ with open(train_path) as f:
                     feature2id.feature_103_dict,
                     feature2id.feature_104_dict,
                     feature2id.feature_105_dict))
-            else:
-                histories[h] += 1
 
             pptag = ptag
             ptag = cur_tag
 
 rel_features_for_all_tags_hist = dict()
-for hist, reps in histories.items():
+for hist in histories:
     for tag in all_tags:  # ToDo: need to find more tags ?
         h = (hist[0], hist[1], hist[2], tag, hist[4], hist[5])
         if h not in rel_features_for_all_tags_hist:

@@ -24,14 +24,14 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
     empirical_counts = np.zeros(feature2id.n_total_features)
     expected_counts = np.zeros(feature2id.n_total_features)
     normalization_term, linear_term = 0, 0
-    for history, reps in histories.items():
+    for history in histories:
         relevant_features = relevant_features_list[history]
 
         """ Linear Term: """
-        linear_term += sum(w_i[relevant_features]) * reps
+        linear_term += sum(w_i[relevant_features])
 
         """ Empirical Counts: """
-        empirical_counts[relevant_features] += reps
+        empirical_counts[relevant_features] += 1
 
         """ Normalization Term: """
         inside_log_calc = 0
@@ -47,13 +47,12 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
             # Expected Count:
             expected_counts_temp[tag_rel_features] += exp  # f(xi,yTag)*p(yTag|xi;v)
 
-        normalization_term += np.log(inside_log_calc) * reps
-        expected_counts_temp = expected_counts_temp * reps
+        normalization_term += np.log(inside_log_calc)
         expected_counts_temp /= inside_log_calc
         expected_counts += expected_counts_temp
 
-    regularization = -0.5 * lamda * math.pow(np.linalg.norm(w_i), 2)
-    regularization_grad = -lamda * w_i
+    regularization = 0.5 * lamda * math.pow(np.linalg.norm(w_i), 2)
+    regularization_grad = lamda * w_i
     likelihood = linear_term - normalization_term - regularization  # (1)
     grad = empirical_counts - expected_counts - regularization_grad  # (2)
 
