@@ -64,3 +64,10 @@ class feature_statistics_class():
                     pptag = ptag
                     ptag = cur_tag
 
+        self.n_total_features = len(self.words_tags_count_dict)
+        self.n_total_features += len(self.suffixes_tags_count_dict)
+        self.n_total_features += len(self.prefixes_tags_count_dict)
+        self.n_total_features += len(self.feature_103_dict)
+        self.n_total_features += len(self.feature_104_dict)
+        self.n_total_features += len(self.feature_105_dict)
+

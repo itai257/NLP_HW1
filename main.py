@@ -8,7 +8,7 @@ import numpy as np
 import pickle
 import time
 
-threshold = 10
+threshold = 30
 start1 = time.time()
 train_path = "/datashare/hw1/train1.wtag"
 #train_path = "data/train1.wtag"
@@ -56,13 +56,11 @@ with open(train_path) as f:
             pptag = ptag
             ptag = cur_tag
 
-all_tags_histories = dict()
 rel_features_for_all_tags_hist = dict()
 for hist, reps in histories.items():
-    for tag in all_tags:  # TBD: need to find more tags ?
+    for tag in all_tags:  # ToDo: need to find more tags ?
         h = (hist[0], hist[1], hist[2], tag, hist[4], hist[5])
-        if h not in all_tags_histories.keys():
-            all_tags_histories[h] = reps
+        if h not in rel_features_for_all_tags_hist:
             rel_features_for_all_tags_hist[h] = (represent_input_with_features(
                 h,
                 feature2id.words_tags_dict,
@@ -71,12 +69,10 @@ for hist, reps in histories.items():
                 feature2id.feature_103_dict,
                 feature2id.feature_104_dict,
                 feature2id.feature_105_dict))
-        else:
-            all_tags_histories[h] += reps  ##
 
 
 n_total_features = feature2id.n_total_features
-w_0 = np.zeros(n_total_features, dtype=np.float32)
+w_0 = np.zeros(n_total_features, dtype=np.float64)
 args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist)
 
 optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
