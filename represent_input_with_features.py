@@ -30,7 +30,7 @@ def represent_input_with_features(history,
     if (word, ctag) in word_tags_dict:
         features.append(word_tags_dict[(word, ctag)])
 
-    for i in range(1, 5):
+    for i in range(2, 5):
         suffix = word[-i:]
         if len(word) > len(suffix):
             if (suffix, ctag) in suffix_tags_dict:

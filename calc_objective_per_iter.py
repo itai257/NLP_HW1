@@ -17,7 +17,7 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
     print(w_i)
     start = time.time()
     w_i = np.array(w_i)
-    lamda = 0.25  # ToDo
+    lamda = 1.5  # ToDo
     empirical_counts = np.zeros(feature2id.n_total_features)
     expected_counts = np.zeros(feature2id.n_total_features)
     normalization_term, linear_term = 0, 0
