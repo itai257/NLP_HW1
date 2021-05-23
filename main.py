@@ -8,6 +8,10 @@ import numpy as np
 import pickle
 import time
 
+class iter_count():
+    def __init__(self):
+        self.n = 0
+
 threshold = 30
 start1 = time.time()
 train_path = "/datashare/hw1/train1.wtag"
@@ -70,10 +74,10 @@ for hist, reps in histories.items():
                 feature2id.feature_104_dict,
                 feature2id.feature_105_dict))
 
-
+iteration_count = iter_count()
 n_total_features = feature2id.n_total_features
 w_0 = np.zeros(n_total_features, dtype=np.float64)
-args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist)
+args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count)
 
 optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
 weights = optimal_params[0]
