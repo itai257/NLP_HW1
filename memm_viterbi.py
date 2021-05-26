@@ -2,6 +2,19 @@ import pickle
 from represent_input_with_features import represent_input_with_features
 import numpy as np
 
+
+def get_possible_last_tags_lists(pai: dict):
+    v = list(pai.values())
+    k = list(pai.keys())
+    max_key = k[v.index(max(v))]
+    v.remove(max(v))
+    k.remove(max_key)
+    second_max_key = k[v.index(max(v))]
+    return [second_max_key[0], max_key[0]], [second_max_key[1], max_key[1]]
+
+
+
+
 def memm_viterbi(all_tags, sentence, weights_path, feature2id):
     """
     Write your MEMM Vitebi imlementation below
@@ -114,13 +127,14 @@ def memm_viterbi(all_tags, sentence, weights_path, feature2id):
         return get_tag_sequence(pai_list, bp_list)
     #
 
-    for idx in range(2, len(sentence_words) - 1):  # ToDO: for now we're not handling last word (it suppose to be ., should we handle?)
+    for idx in range(2, len(sentence_words) - 1):
         pai = dict()
         bp = dict()
-        for u_tag in all_tags:
+        t_list, u_list  = get_possible_last_tags_lists(pai_list[idx-1])
+        for u_tag in u_list:
             for v_tag in all_tags:
                 prob_lst_for_t = dict()
-                for t in all_tags:
+                for t in t_list:
                     h = (sentence_words[idx], t, u_tag, v_tag, sentence_words[idx + 1], sentence_words[idx - 1])
 
                     if h not in relevant_features_for_idx:
