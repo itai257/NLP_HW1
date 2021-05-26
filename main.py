@@ -107,13 +107,12 @@ def get_sentence_and_tags(line):
 test_path1 = "/datashare/hw1/test1.wtag"
 accuracy_list = []
 with open(test_path1) as f:
-    for i in range(100):
-        line = f.readline()
+    for line in f:
         sen, real_tags = get_sentence_and_tags(line)
         infer_tags = memm_viterbi(all_tags, sen, weights_path, feature2id)
         accuracy = (np.count_nonzero(np.array(infer_tags) == np.array(real_tags)) / len(infer_tags)) * 100
         accuracy_list.append(accuracy)
-        print("Accuracy for line {}: {}".format(i, accuracy))
+        print("Accuracy for line: {}".format(accuracy))
 
 print("total Accuracy:")
 print(sum(accuracy_list) / len(accuracy_list))
