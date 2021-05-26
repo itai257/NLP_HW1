@@ -14,7 +14,7 @@ class iter_count():
         self.n = 0
 
 
-threshold = 20
+threshold = 15
 start1 = time.time()
 train_path = "/datashare/hw1/train1.wtag"
 #train_path = "data/train1.wtag"
