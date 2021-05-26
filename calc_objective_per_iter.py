@@ -1,8 +1,5 @@
 import math
-from collections import OrderedDict
 import numpy as np
-
-from represent_input_with_features import represent_input_with_features
 import time
 
 def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags, rel_features_for_all_tags_hist, iteration_count):
@@ -20,7 +17,7 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
     print(w_i)
     start = time.time()
     w_i = np.array(w_i)
-    lamda = 1.5  # ToDo
+    lamda = 2  # ToDo
     empirical_counts = np.zeros(feature2id.n_total_features)
     expected_counts = np.zeros(feature2id.n_total_features)
     normalization_term, linear_term = 0, 0
