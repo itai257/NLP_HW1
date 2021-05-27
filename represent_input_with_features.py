@@ -21,7 +21,6 @@ def represent_input_with_features(history, features2id: feature2id_class):
     ctag = history[3]
     nword = history[4]
     pword = history[5]
-    index = history[6]  # TODO: Make sure history is of size 6
     features = []
 
     if (word, ctag) in features2id.words_tags_dict:
@@ -45,10 +44,14 @@ def represent_input_with_features(history, features2id: feature2id_class):
     if ctag in features2id.tags_dict:
         features.append(features2id.tags_dict[ctag])
 
-    lc_word = word.lower()
-    if lc_word != word and index != 0 and ctag in features2id.capitals_tags_dict:
-        features.append(features2id.capitals_tags_dict[ctag])
+    if ptag != '*':
+        if word.lower() != word and ctag in features2id.capitals_tags_dict:
+            features.append(features2id.capitals_tags_dict[ctag])
 
-    if (index, ctag) in features2id.indexes_tags_dict:
-        features.append(features2id.indexes_tags_dict[(index, ctag)])
+        if ctag in features2id.second_tags_dict:
+            features.append(features2id.second_tags_dict[ctag])
+
+    else:
+        if ctag in features2id.first_tags_dict:
+            features.append(features2id.first_tags_dict[ctag])
     return features

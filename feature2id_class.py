@@ -14,8 +14,9 @@ class feature2id_class():
         self.n_tags_pairs = 0
         self.n_tags = 0
 
-        self.n_capitals_tags_dict = OrderedDict()
-        self.n_indexes_tags_dict = OrderedDict()
+        self.n_capitals_tags_dict = 0
+        self.n_first_tags_dict = 0
+        self.n_second_tags_dict = 0
 
         # Init all features dictionaries
         self.words_tags_dict = OrderedDict()
@@ -26,12 +27,14 @@ class feature2id_class():
         self.tags_dict = OrderedDict()
 
         self.capitals_tags_dict = OrderedDict()
-        self.indexes_tags_dict = OrderedDict()
+        self.first_tags_dict = OrderedDict()
+        self.second_tags_dict = OrderedDict()
+
 
     def get_features(self):
         t = self.threshold
         self.n_words_tags = self.set_best_features_index(self.words_tags_dict,
-                                                         self.feature_statistics.words_tags_count_dict, t)
+                                                         self.feature_statistics.words_tags_count_dict, 2*t)
         print("word tag pair features:", self.n_words_tags)
         self.n_suffixes_tags = self.set_best_features_index_2(self.suffixes_tags_dict,
                                                               self.feature_statistics.suffixes_tags_count_dict, t)
@@ -43,19 +46,22 @@ class feature2id_class():
                                                           self.feature_statistics.tags_tuples_count_dict, 2*t)
         print("tag tuples features:", self.n_tags_tuples)
         self.n_tags_pairs = self.set_best_features_index(self.tags_pairs_dict,
-                                                         self.feature_statistics.tags_pairs_count_dict, 3*t)
+                                                         self.feature_statistics.tags_pairs_count_dict, t)
         print("tag pair features:", self.n_tags_pairs)
 
         self.n_tags = self.set_best_features_index(self.tags_dict,
-                                                   self.feature_statistics.tags_count_dict, 5*t)
+                                                   self.feature_statistics.tags_count_dict, t)
         print("tag features:", self.n_tags)
 
         self.n_capitals_tags_dict = self.set_best_features_index(self.capitals_tags_dict,
-                                                                 self.feature_statistics.capitals_tags_count_dict, 5*t)
+                                                                 self.feature_statistics.capitals_tags_count_dict, t)
         print("has-capital tag pair features:", self.n_capitals_tags_dict)
-        self.n_indexes_tags_dict = self.set_best_features_index(self.indexes_tags_dict,
-                                                                self.feature_statistics.indexes_tags_count_dict, 5*t)
-        print("index tag pair features:", self.n_indexes_tags_dict)
+        self.n_first_tags_dict = self.set_best_features_index(self.first_tags_dict,
+                                                              self.feature_statistics.first_tags_count_dict, t)
+        print("first tag features:", self.n_first_tags_dict)
+        self.n_second_tags_dict = self.set_best_features_index(self.second_tags_dict,
+                                                              self.feature_statistics.second_tags_count_dict, t)
+        print("second tag features:", self.n_second_tags_dict)
 
     def set_best_features_index(self, f_dict, feature_statistics_dict, threshold):
         index = self.n_total_features
@@ -71,7 +77,7 @@ class feature2id_class():
     def set_best_features_index_2(self, f_dict, feature_statistics_dict, base_threshold):
         index = self.n_total_features
         for key in feature_statistics_dict:
-            threshold = base_threshold * (6 - len(key[1]))
+            threshold = base_threshold * (10 - len(key[1]))
             if key not in f_dict and (feature_statistics_dict[key] >= threshold):
                 f_dict[key] = index
                 index += 1

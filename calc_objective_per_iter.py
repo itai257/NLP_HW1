@@ -35,7 +35,7 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
         inside_log_calc = 0
         expected_counts_temp = np.zeros(feature2id.n_total_features)
         for tag in all_tags:  # TBD: need to find more tags ?
-            h = (history[0], history[1], history[2], tag, history[4], history[5], history[6])
+            h = (history[0], history[1], history[2], tag, history[4], history[5])
             tag_rel_features = rel_features_for_all_tags_hist[h]
 
             tag_weighted_features = sum(w_i[tag_rel_features])

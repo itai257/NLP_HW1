@@ -15,7 +15,8 @@ class feature_statistics_class():
         self.tags_count_dict = OrderedDict()
 
         self.capitals_tags_count_dict = OrderedDict()
-        self.indexes_tags_count_dict = OrderedDict()
+        self.first_tags_count_dict = OrderedDict()
+        self.second_tags_count_dict = OrderedDict()
 
     def get_word_tag_pair_count(self, file_path):
         """
@@ -66,18 +67,23 @@ class feature_statistics_class():
                         self.tags_count_dict[cur_tag] += 1
 
                     # New features
-                    lc_cur_word = cur_word.lower()
-                    if cur_word != lc_cur_word and word_idx != 0:
-                        if cur_tag not in self.capitals_tags_count_dict:
-                            self.capitals_tags_count_dict[cur_tag] = 1
-                        else:
-                            self.capitals_tags_count_dict[cur_tag] += 1
+                    if ptag != '*':
+                        if cur_word != cur_word.lower():
+                            if cur_tag not in self.capitals_tags_count_dict:
+                                self.capitals_tags_count_dict[cur_tag] = 1
+                            else:
+                                self.capitals_tags_count_dict[cur_tag] += 1
 
-                    if (word_idx, cur_tag) not in self.indexes_tags_count_dict:
-                        self.indexes_tags_count_dict[(word_idx, cur_tag)] = 1
+                        if pptag == '*':
+                            if cur_tag not in self.second_tags_count_dict:
+                                self.second_tags_count_dict[cur_tag] = 1
+                            else:
+                                self.second_tags_count_dict[cur_tag] += 1
                     else:
-                        self.indexes_tags_count_dict[(word_idx, cur_tag)] += 1
-
+                        if cur_tag not in self.first_tags_count_dict:
+                            self.first_tags_count_dict[cur_tag] = 1
+                        else:
+                            self.first_tags_count_dict[cur_tag] += 1
                     pptag = ptag
                     ptag = cur_tag
 
@@ -87,4 +93,9 @@ class feature_statistics_class():
         self.n_total_features += len(self.tags_tuples_count_dict)
         self.n_total_features += len(self.tags_pairs_count_dict)
         self.n_total_features += len(self.tags_count_dict)
+        self.n_total_features += len(self.capitals_tags_count_dict)
+
+        self.n_total_features += len(self.first_tags_count_dict)
+        self.n_total_features += len(self.second_tags_count_dict)
+
 

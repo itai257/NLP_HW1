@@ -19,8 +19,8 @@ threshold = 5
 lamda = 2.5
 
 start1 = time.time()
-train_path = "/datashare/hw1/train1.wtag"
-#train_path = "data/train1.wtag"
+# train_path = "/datashare/hw1/train1.wtag"
+train_path = "data/train1.wtag"
 
 # Statistics
 statistics = feature_statistics_class()
@@ -35,6 +35,7 @@ all_tags = statistics.tags_count_dict.keys()
 
 
 histories = dict()
+unique_hist_count = 0
 with open(train_path) as f:
     for line in f:
         splited_words = line.replace('\n', ' ').split(' ')
@@ -42,20 +43,21 @@ with open(train_path) as f:
         pptag, ptag = '*', '*'
         for word_idx in range(len(splited_words)):
             cur_word, cur_tag = splited_words[word_idx].split('_')
-            h = (cur_word, pptag, ptag, cur_tag, '', '', word_idx)
+            h = (cur_word, pptag, ptag, cur_tag, '', '')
             if h not in histories:
                 histories[h] = 1
                 relevant_features_for_idx[h] = (represent_input_with_features(h, feature2id))
+                unique_hist_count += 1
             else:
                 histories[h] += 1
 
             pptag = ptag
             ptag = cur_tag
-
+print(unique_hist_count)
 rel_features_for_all_tags_hist = dict()
 for hist, reps in histories.items():
     for tag in all_tags:  # ToDo: need to find more tags ?
-        h = (hist[0], hist[1], hist[2], tag, hist[4], hist[5], hist[6])
+        h = (hist[0], hist[1], hist[2], tag, hist[4], hist[5])
         if h not in rel_features_for_all_tags_hist:
             rel_features_for_all_tags_hist[h] = (represent_input_with_features(h, feature2id))
 
