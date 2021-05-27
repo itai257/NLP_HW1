@@ -14,11 +14,24 @@ class iter_count():
     def __init__(self):
         self.n = 0
 
+def get_sentence_and_tags(line):
+    words = []
+    tags = []
+    splited_words = line.replace('\n', ' ').split(' ')
+    del splited_words[-1]
+    for word_idx in range(len(splited_words)):
+        cur_word, cur_tag = splited_words[word_idx].split('_')
+        words.append(cur_word)
+        tags.append(cur_tag)
+    sentence = ' '.join(words)
+    return sentence, tags
 
 threshold = 5
 lamda = 2.5
 
-start1 = time.time()
+total_time_start = time.time()
+pre_process_time_start = time.time()
+print("Starting pre-process phase:")
 train_path = "/datashare/hw1/train1.wtag"
 # train_path = "data/train1.wtag"
 
@@ -61,6 +74,13 @@ for hist, reps in histories.items():
         if h not in rel_features_for_all_tags_hist:
             rel_features_for_all_tags_hist[h] = (represent_input_with_features(h, feature2id))
 
+pre_process_time_end = time.time()
+print("end pre process phase, time: {}".format(pre_process_time_end - pre_process_time_start))
+print("----")
+
+training_time_start = time.time()
+print("Starting training phase:")
+
 weights_path = 'trained_weights/trained_weights_data_train1.pkl'
 iteration_count = iter_count()
 n_total_features = feature2id.n_total_features
@@ -77,32 +97,58 @@ with open(weights_path, 'wb') as f:
 print("weights:")
 print(weights)
 # """
-def get_sentence_and_tags(line):
-    words = []
-    tags = []
-    splited_words = line.replace('\n', ' ').split(' ')
-    del splited_words[-1]
-    for word_idx in range(len(splited_words)):
-        cur_word, cur_tag = splited_words[word_idx].split('_')
-        words.append(cur_word)
-        tags.append(cur_tag)
-    sentence = ' '.join(words)
-    return sentence, tags
+
+training_time_end = time.time()
+print("end training phase, time: {}".format(training_time_end - training_time_start))
+print("----")
+
+inference_time_start = time.time()
+print("Starting inference phase:")
+
 
 ## Testing:
 test_path1 = "/datashare/hw1/test1.wtag"
 #test_path1 = "data/test1.wtag"
+
+tags_infer_mistakes_cnt = dict()
+all_tags_real_infer_dict = dict()
 accuracy_list = []
+
+for tag in all_tags:
+    tags_infer_mistakes_cnt[tag] = 0
+    for tag2 in all_tags:
+        all_tags_real_infer_dict[(tag, tag2)] = 0
+
 with open(test_path1) as f:
 
     for line in f:
         sen, real_tags = get_sentence_and_tags(line)
         infer_tags = memm_viterbi(all_tags, sen, weights_path, feature2id)
-        accuracy = (np.count_nonzero(np.array(infer_tags) == np.array(real_tags)) / len(infer_tags)) * 100
+        true_false_arr = (np.array(infer_tags) == np.array(real_tags))
+        accuracy = (np.count_nonzero(true_false_arr) / len(infer_tags)) * 100
         accuracy_list.append(accuracy)
-        print("Accuracy: {}".format(accuracy))
-print("Test accuracy with train1 data:", )
+        false_infer_tags = np.array(real_tags)[true_false_arr == False]
+
+        for i in range(len(real_tags)):
+            all_tags_real_infer_dict[(real_tags[i], infer_tags[i])] += 1
+
+        for t in false_infer_tags:
+            tags_infer_mistakes_cnt[t] += 1
+
+inference_time_end = time.time()
+print("end inference phase, time: {}".format(inference_time_end - inference_time_start))
+print("----")
+
+max_mistakes_tags = sorted(tags_infer_mistakes_cnt, key=tags_infer_mistakes_cnt.get, reverse=True)[:10]
+for t1 in max_mistakes_tags:
+    for t2 in max_mistakes_tags:
+        val = all_tags_real_infer_dict[(t1,t2)]
+        print("real tag: {}, inference tag: {}, value: {}".format(t1, t2, val))
+
+print("Test accuracy with train1 data:")
 print(sum(accuracy_list) / len(accuracy_list))
-end1 = time.time()
+total_time_end = time.time()
 print("total time:")
-print(end1 - start1)
+print(total_time_end - total_time_start)
+print("iterations count:")
+print(iteration_count.n)
