@@ -19,8 +19,8 @@ threshold = 5
 lamda = 2.5
 
 start1 = time.time()
-# train_path = "/datashare/hw1/train1.wtag"
-train_path = "data/train1.wtag"
+train_path = "/datashare/hw1/train1.wtag"
+# train_path = "data/train1.wtag"
 
 # Statistics
 statistics = feature_statistics_class()
