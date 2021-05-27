@@ -20,7 +20,7 @@ lamda = 2.5
 
 start1 = time.time()
 train_path = "/datashare/hw1/train1.wtag"
-# train_path = "data/train1.wtag"
+#train_path = "data/train1.wtag"
 
 # Statistics
 statistics = feature_statistics_class()
@@ -64,17 +64,17 @@ iteration_count = iter_count()
 n_total_features = feature2id.n_total_features
 w_0 = np.zeros(n_total_features, dtype=np.float64)
 # """
-args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
-
-optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
-weights = optimal_params[0]
-
-with open(weights_path, 'wb') as f:
-    pickle.dump(optimal_params, f)
+#args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
+#
+#optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
+#weights = optimal_params[0]
+#
+#with open(weights_path, 'wb') as f:
+#    pickle.dump(optimal_params, f)
+#
+#print("weights:")
+#print(weights)
 # """
-print("weights:")
-print(weights)
-
 def get_sentence_and_tags(line):
     words = []
     tags = []
@@ -89,13 +89,16 @@ def get_sentence_and_tags(line):
 
 ## Testing:
 test_path1 = "/datashare/hw1/test1.wtag"
+#test_path1 = "data/test1.wtag"
 accuracy_list = []
 with open(test_path1) as f:
+
     for line in f:
         sen, real_tags = get_sentence_and_tags(line)
         infer_tags = memm_viterbi(all_tags, sen, weights_path, feature2id)
-        accuracy = (np.count_nonzero(np.array(infer_tags) == (np.array(real_tags)) / len(infer_tags))) * 100
+        accuracy = (np.count_nonzero(np.array(infer_tags) == np.array(real_tags)) / len(infer_tags)) * 100
         accuracy_list.append(accuracy)
+        print("Accuracy: {}".format(accuracy))
 print("Test accuracy with train1 data:", )
 print(sum(accuracy_list) / len(accuracy_list))
 end1 = time.time()
