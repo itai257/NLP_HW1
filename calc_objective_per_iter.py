@@ -1,8 +1,6 @@
 import math
 import numpy as np
 import time
-import cuda
-
 
 def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags,
                             rel_features_for_all_tags_hist, iteration_count, lamda):
