@@ -1,14 +1,10 @@
 import collections
 from collections import OrderedDict
+from feature2id_class import feature2id_class
 
-def represent_input_with_features(history,
-                                  word_tags_dict,
-                                  suffix_tags_dict,
-                                  prefixes_tags_dict,
-                                  feature_103_dict,
-                                  feature_104_dict,
-                                  feature_105_dict):
+def represent_input_with_features(history, features2id: feature2id_class):
     """
+
         Extract feature vector in per a given history
         :param history: touple{word, pptag, ptag, ctag, nword, pword}
         :param word_tags_dict: word\tag dict
@@ -25,27 +21,34 @@ def represent_input_with_features(history,
     ctag = history[3]
     nword = history[4]
     pword = history[5]
+    index = history[6]  # TODO: Make sure history is of size 6
     features = []
 
-    if (word, ctag) in word_tags_dict:
-        features.append(word_tags_dict[(word, ctag)])
+    if (word, ctag) in features2id.words_tags_dict:
+        features.append(features2id.words_tags_dict[(word, ctag)])
 
     for i in range(2, 5):
         suffix = word[-i:]
         if len(word) > len(suffix):
-            if (suffix, ctag) in suffix_tags_dict:
-                features.append(suffix_tags_dict[(suffix, ctag)])
+            if (suffix, ctag) in features2id.suffixes_tags_dict:
+                features.append(features2id.suffixes_tags_dict[(suffix, ctag)])
         prefix = word[:i]
-        if (prefix, ctag) in prefixes_tags_dict:
-            features.append(prefixes_tags_dict[(prefix, ctag)])
+        if (prefix, ctag) in features2id.prefixes_tags_dict:
+            features.append(features2id.prefixes_tags_dict[(prefix, ctag)])
 
-    if (pptag, ptag, ctag) in feature_103_dict:
-        features.append(feature_103_dict[(pptag, ptag, ctag)])
+    if (pptag, ptag, ctag) in features2id.tags_tuples_dict:
+        features.append(features2id.tags_tuples_dict[(pptag, ptag, ctag)])
 
-    if (ptag, ctag) in feature_104_dict:
-        features.append(feature_104_dict[(ptag, ctag)])
+    if (ptag, ctag) in features2id.tags_pairs_dict:
+        features.append(features2id.tags_pairs_dict[(ptag, ctag)])
 
-    if ctag in feature_105_dict:
-        features.append(feature_105_dict[ctag])
+    if ctag in features2id.tags_dict:
+        features.append(features2id.tags_dict[ctag])
 
+    lc_word = word.lower()
+    if lc_word != word and index != 0 and ctag in features2id.capitals_tags_dict:
+        features.append(features2id.capitals_tags_dict[ctag])
+
+    if (index, ctag) in features2id.indexes_tags_dict:
+        features.append(features2id.indexes_tags_dict[(index, ctag)])
     return features
