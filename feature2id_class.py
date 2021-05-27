@@ -29,29 +29,50 @@ class feature2id_class():
         self.indexes_tags_dict = OrderedDict()
 
     def get_features(self):
+        t = self.threshold
         self.n_words_tags = self.set_best_features_index(self.words_tags_dict,
-                                                         self.feature_statistics.words_tags_count_dict)
-        self.n_suffixes_tags = self.set_best_features_index(self.suffixes_tags_dict,
-                                                            self.feature_statistics.suffixes_tags_count_dict)
-        self.n_prefixes_tags = self.set_best_features_index(self.prefixes_tags_dict,
-                                                            self.feature_statistics.prefixes_tags_count_dict)
+                                                         self.feature_statistics.words_tags_count_dict, t)
+        print("word tag pair features:", self.n_words_tags)
+        self.n_suffixes_tags = self.set_best_features_index_2(self.suffixes_tags_dict,
+                                                              self.feature_statistics.suffixes_tags_count_dict, t)
+        print("suffix tag pair features:", self.n_suffixes_tags)
+        self.n_prefixes_tags = self.set_best_features_index_2(self.prefixes_tags_dict,
+                                                              self.feature_statistics.prefixes_tags_count_dict, t)
+        print("prefix tag pair features:", self.n_prefixes_tags)
         self.n_tags_tuples = self.set_best_features_index(self.tags_tuples_dict,
-                                                          self.feature_statistics.tags_tuples_count_dict)
+                                                          self.feature_statistics.tags_tuples_count_dict, 2*t)
+        print("tag tuples features:", self.n_tags_tuples)
         self.n_tags_pairs = self.set_best_features_index(self.tags_pairs_dict,
-                                                         self.feature_statistics.tags_pairs_count_dict)
+                                                         self.feature_statistics.tags_pairs_count_dict, 3*t)
+        print("tag pair features:", self.n_tags_pairs)
+
         self.n_tags = self.set_best_features_index(self.tags_dict,
-                                                   self.feature_statistics.tags_count_dict)
+                                                   self.feature_statistics.tags_count_dict, 5*t)
+        print("tag features:", self.n_tags)
 
         self.n_capitals_tags_dict = self.set_best_features_index(self.capitals_tags_dict,
-                                                                 self.feature_statistics.capitals_tags_count_dict)
-
+                                                                 self.feature_statistics.capitals_tags_count_dict, 5*t)
+        print("has-capital tag pair features:", self.n_capitals_tags_dict)
         self.n_indexes_tags_dict = self.set_best_features_index(self.indexes_tags_dict,
-                                                                self.feature_statistics.indexes_tags_count_dict)
+                                                                self.feature_statistics.indexes_tags_count_dict, 5*t)
+        print("index tag pair features:", self.n_indexes_tags_dict)
 
-    def set_best_features_index(self, f_dict, feature_statistics_dict):
+    def set_best_features_index(self, f_dict, feature_statistics_dict, threshold):
         index = self.n_total_features
         for key in feature_statistics_dict:
-            if key not in f_dict and (feature_statistics_dict[key] >= self.threshold):
+            if key not in f_dict and (feature_statistics_dict[key] >= threshold):
+                f_dict[key] = index
+                index += 1
+
+        features_count = index - self.n_total_features
+        self.n_total_features = index
+        return features_count
+
+    def set_best_features_index_2(self, f_dict, feature_statistics_dict, base_threshold):
+        index = self.n_total_features
+        for key in feature_statistics_dict:
+            threshold = base_threshold * (6 - len(key[1]))
+            if key not in f_dict and (feature_statistics_dict[key] >= threshold):
                 f_dict[key] = index
                 index += 1
 

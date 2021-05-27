@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import time
+import numba
 
 
 def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags,
