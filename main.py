@@ -1,5 +1,5 @@
-from feature_statistics_class import feature_statistics_class
-from feature2id_class import feature2id_class
+from featurestatisticsclass import FeatureStatisticsClass
+from feature2idclass import Feature2IdClass
 from represent_input_with_features import represent_input_with_features
 from memm_viterbi import memm_viterbi
 from collections import OrderedDict
@@ -36,11 +36,11 @@ train_path = "/datashare/hw1/train1.wtag"
 # train_path = "data/train1.wtag"
 
 # Statistics
-statistics = feature_statistics_class()
+statistics = FeatureStatisticsClass()
 statistics.get_word_tag_pair_count(train_path)
 
 # feature2id
-feature2id = feature2id_class(statistics, threshold)
+feature2id = Feature2IdClass(statistics, threshold)
 feature2id.get_features()
 
 relevant_features_for_idx = dict()

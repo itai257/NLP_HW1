@@ -2,18 +2,16 @@ import math
 import numpy as np
 import time
 
+
 def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, all_tags,
                             rel_features_for_all_tags_hist, iteration_count, lamda):
     """
-        Calculate max entropy likelihood for an iterative optimization method
-  #      :param w_i: weights vector in iteration i
-        :param arg_i: arguments passed to this function, such as lambda hyperparameter for regularization
-
-            The function returns the Max Entropy likelihood (objective) and the objective gradient
+    Calculate max entropy likelihood for an iterative optimization method
+    The function returns the Max Entropy likelihood (objective) and the objective gradient
     """
     iteration_count.n += 1
-    #print("current iteration:")
-    #print(iteration_count.n)
+    # print("current iteration:")
+    # print(iteration_count.n)
     start = time.time()
     w_i = np.array(w_i)
     # lamda = 2  # ToDo
@@ -54,6 +52,6 @@ def calc_objective_per_iter(w_i, feature2id, histories, relevant_features_list, 
     grad = empirical_counts - expected_counts - regularization_grad  # (2)
 
     end = time.time()
-    #print("calc_objective_per_iter iteration time:")
-    #print(end - start)
+    # print("calc_objective_per_iter iteration time:")
+    # print(end - start)
     return (-1) * likelihood, (-1) * grad

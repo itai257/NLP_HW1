@@ -1,8 +1,7 @@
-import collections
 from collections import OrderedDict
 
 
-class feature_statistics_class():
+class FeatureStatisticsClass:
     def __init__(self):
         self.n_total_features = 0  # Total number of features accumulated
 
@@ -17,6 +16,7 @@ class feature_statistics_class():
         self.capitals_tags_count_dict = OrderedDict()
         self.first_tags_count_dict = OrderedDict()
         self.second_tags_count_dict = OrderedDict()
+        self.lengths_tags_count_dict = OrderedDict()
 
     def get_word_tag_pair_count(self, file_path):
         """
@@ -28,7 +28,7 @@ class feature_statistics_class():
             for line in f:
                 line_words = line.replace('\n', ' ').split(' ')
                 del line_words[-1]
-                pptag, ptag = '*', '*'
+                pp_tag, p_tag = '*', '*'
                 for word_idx in range(len(line_words)):
                     cur_word, cur_tag = line_words[word_idx].split('_')
 
@@ -51,15 +51,15 @@ class feature_statistics_class():
                             else:
                                 self.prefixes_tags_count_dict[(cur_prefix, cur_tag)] += 1
 
-                    if (pptag, ptag, cur_tag) not in self.tags_tuples_count_dict:
-                        self.tags_tuples_count_dict[(pptag, ptag, cur_tag)] = 1
+                    if (pp_tag, p_tag, cur_tag) not in self.tags_tuples_count_dict:
+                        self.tags_tuples_count_dict[(pp_tag, p_tag, cur_tag)] = 1
                     else:
-                        self.tags_tuples_count_dict[(pptag, ptag, cur_tag)] += 1
+                        self.tags_tuples_count_dict[(pp_tag, p_tag, cur_tag)] += 1
 
-                    if (ptag, cur_tag) not in self.tags_pairs_count_dict:
-                        self.tags_pairs_count_dict[(ptag, cur_tag)] = 1
+                    if (p_tag, cur_tag) not in self.tags_pairs_count_dict:
+                        self.tags_pairs_count_dict[(p_tag, cur_tag)] = 1
                     else:
-                        self.tags_pairs_count_dict[(ptag, cur_tag)] += 1
+                        self.tags_pairs_count_dict[(p_tag, cur_tag)] += 1
 
                     if cur_tag not in self.tags_count_dict:
                         self.tags_count_dict[cur_tag] = 1
@@ -67,25 +67,33 @@ class feature_statistics_class():
                         self.tags_count_dict[cur_tag] += 1
 
                     # New features
-                    if ptag != '*':
+                    if p_tag != '*':
                         if cur_word != cur_word.lower():
                             if cur_tag not in self.capitals_tags_count_dict:
                                 self.capitals_tags_count_dict[cur_tag] = 1
                             else:
                                 self.capitals_tags_count_dict[cur_tag] += 1
 
-                        if pptag == '*':
+                        if pp_tag == '*':
                             if cur_tag not in self.second_tags_count_dict:
                                 self.second_tags_count_dict[cur_tag] = 1
                             else:
                                 self.second_tags_count_dict[cur_tag] += 1
+
                     else:
                         if cur_tag not in self.first_tags_count_dict:
                             self.first_tags_count_dict[cur_tag] = 1
                         else:
                             self.first_tags_count_dict[cur_tag] += 1
-                    pptag = ptag
-                    ptag = cur_tag
+
+                    w_len = len(cur_word)
+                    if (w_len, cur_tag) not in self.lengths_tags_count_dict:
+                        self.lengths_tags_count_dict[(w_len, cur_tag)] = 1
+                    else:
+                        self.lengths_tags_count_dict[(w_len, cur_tag)] += 1
+
+                    pp_tag = p_tag
+                    p_tag = cur_tag
 
         self.n_total_features = len(self.words_tags_count_dict)
         self.n_total_features += len(self.suffixes_tags_count_dict)
@@ -93,9 +101,8 @@ class feature_statistics_class():
         self.n_total_features += len(self.tags_tuples_count_dict)
         self.n_total_features += len(self.tags_pairs_count_dict)
         self.n_total_features += len(self.tags_count_dict)
-        self.n_total_features += len(self.capitals_tags_count_dict)
 
+        self.n_total_features += len(self.capitals_tags_count_dict)
         self.n_total_features += len(self.first_tags_count_dict)
         self.n_total_features += len(self.second_tags_count_dict)
-
-
+        self.n_total_features += len(self.lengths_tags_count_dict)

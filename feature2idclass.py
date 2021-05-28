@@ -1,9 +1,10 @@
 from collections import OrderedDict
 
-class feature2id_class():
+
+class Feature2IdClass:
 
     def __init__(self, feature_statistics, threshold):
-        self.feature_statistics = feature_statistics  # statistics class, for each featue gives empirical counts
+        self.feature_statistics = feature_statistics  # statistics class, for each feature gives empirical counts
         self.threshold = threshold  # feature count threshold - empirical count must be higher than this
 
         self.n_total_features = 0  # Total number of features accumulated
@@ -14,9 +15,10 @@ class feature2id_class():
         self.n_tags_pairs = 0
         self.n_tags = 0
 
-        self.n_capitals_tags_dict = 0
-        self.n_first_tags_dict = 0
-        self.n_second_tags_dict = 0
+        self.n_capitals_tags = 0
+        self.n_first_tags = 0
+        self.n_second_tags = 0
+        self.n_lengths_tags = 0
 
         # Init all features dictionaries
         self.words_tags_dict = OrderedDict()
@@ -29,6 +31,7 @@ class feature2id_class():
         self.capitals_tags_dict = OrderedDict()
         self.first_tags_dict = OrderedDict()
         self.second_tags_dict = OrderedDict()
+        self.lengths_tags_dict = OrderedDict()
 
     def get_features(self):
         t = 10
@@ -52,15 +55,18 @@ class feature2id_class():
                                                    self.feature_statistics.tags_count_dict, t)
         print("tag features:", self.n_tags)
 
-        self.n_capitals_tags_dict = self.set_best_features_index(self.capitals_tags_dict,
-                                                                 self.feature_statistics.capitals_tags_count_dict, t)
-        print("has-capital tag pair features:", self.n_capitals_tags_dict)
-        self.n_first_tags_dict = self.set_best_features_index(self.first_tags_dict,
-                                                              self.feature_statistics.first_tags_count_dict, t)
-        print("first tag features:", self.n_first_tags_dict)
-        self.n_second_tags_dict = self.set_best_features_index(self.second_tags_dict,
-                                                               self.feature_statistics.second_tags_count_dict, t)
-        print("second tag features:", self.n_second_tags_dict)
+        self.n_capitals_tags = self.set_best_features_index(self.capitals_tags_dict,
+                                                            self.feature_statistics.capitals_tags_count_dict, t)
+        print("has-capital tag pair features:", self.n_capitals_tags)
+        self.n_first_tags = self.set_best_features_index(self.first_tags_dict,
+                                                         self.feature_statistics.first_tags_count_dict, t)
+        print("first tag features:", self.n_first_tags)
+        self.n_second_tags = self.set_best_features_index(self.second_tags_dict,
+                                                          self.feature_statistics.second_tags_count_dict, t)
+        print("second tag features:", self.n_second_tags)
+        self.n_lengths_tags = self.set_best_features_index(self.lengths_tags_dict,
+                                                           self.feature_statistics.lengths_tags_count_dict, t)
+        print("length tag features:", self.n_lengths_tags)
 
         print("total features:", self.n_total_features)
 

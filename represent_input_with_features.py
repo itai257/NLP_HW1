@@ -1,8 +1,8 @@
 import collections
 from collections import OrderedDict
-from feature2id_class import feature2id_class
+from feature2idclass import Feature2IdClass
 
-def represent_input_with_features(history, features2id: feature2id_class):
+def represent_input_with_features(history, features2id: Feature2IdClass):
     """
 
         Extract feature vector in per a given history
@@ -48,10 +48,14 @@ def represent_input_with_features(history, features2id: feature2id_class):
         if word.lower() != word and ctag in features2id.capitals_tags_dict:
             features.append(features2id.capitals_tags_dict[ctag])
 
-        if ctag in features2id.second_tags_dict:
+        if pptag == '*' and ctag in features2id.second_tags_dict:
             features.append(features2id.second_tags_dict[ctag])
 
     else:
         if ctag in features2id.first_tags_dict:
             features.append(features2id.first_tags_dict[ctag])
+
+    w_len = len(word)
+    if (w_len, ctag) in features2id.lengths_tags_dict:
+        features.append(features2id.lengths_tags_dict[(w_len, ctag)])
     return features
