@@ -83,19 +83,19 @@ print("Starting training phase:")
 
 weights_path = 'trained_weights/trained_weights_data_train1.pkl'
 iteration_count = iter_count()
-n_total_features = feature2id.n_total_features
-w_0 = np.zeros(n_total_features, dtype=np.float64)
-# """
-args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
-
-optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
-weights = optimal_params[0]
-
-with open(weights_path, 'wb') as f:
-    pickle.dump(optimal_params, f)
-
-print("weights:")
-print(weights)
+#n_total_features = feature2id.n_total_features
+#w_0 = np.zeros(n_total_features, dtype=np.float64)
+## """
+#args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
+#
+#optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
+#weights = optimal_params[0]
+#
+#with open(weights_path, 'wb') as f:
+#    pickle.dump(optimal_params, f)
+#
+#print("weights:")
+#print(weights)
 # """
 
 training_time_end = time.time()
