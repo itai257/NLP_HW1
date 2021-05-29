@@ -149,7 +149,7 @@ def get_tag_sequence(pai_list, bp_list):
     pai = pai_list[n]
     (ntag, nntag) = get_key_with_max_val(pai)
     tag_sequence.append(nntag)
-    if n > 1:
+    if ntag != '*':
         tag_sequence.append(ntag)
 
     for i in range(n - 2, -1, -1):

@@ -119,7 +119,6 @@ for tag in all_tags:
     for tag2 in all_tags:
         all_tags_real_infer_dict[(tag, tag2)] = 0
 
-i = 0
 with open(train_path) as f:
     for line in f:
         sen, real_tags = get_sentence_and_tags(line)
@@ -127,18 +126,11 @@ with open(train_path) as f:
         true_false_arr = (np.array(infer_tags) == np.array(real_tags))
         false_infer_tags = np.array(real_tags)[true_false_arr == False]
 
-        if len(real_tags) != len(infer_tags):
-            print(i)
-            print(real_tags)
-            print(infer_tags)
-
         for i in range(len(real_tags)):
             all_tags_real_infer_dict[(real_tags[i], infer_tags[i])] += 1
 
         for t in false_infer_tags:
             tags_infer_mistakes_cnt[t] += 1
-
-        i += 1
 
 inference_time_end = time.time()
 print("end inference phase, time: {}".format(inference_time_end - inference_time_start))
