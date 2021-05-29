@@ -112,7 +112,6 @@ test_path1 = "/datashare/hw1/test1.wtag"
 
 tags_infer_mistakes_cnt = dict()
 all_tags_real_infer_dict = dict()
-accuracy_list = []
 
 for tag in all_tags:
     tags_infer_mistakes_cnt[tag] = 0
@@ -125,8 +124,6 @@ with open(test_path1) as f:
         sen, real_tags = get_sentence_and_tags(line)
         infer_tags = memm_viterbi(all_tags, sen, weights_path, feature2id)
         true_false_arr = (np.array(infer_tags) == np.array(real_tags))
-        accuracy = (np.count_nonzero(true_false_arr) / len(infer_tags)) * 100
-        accuracy_list.append(accuracy)
         false_infer_tags = np.array(real_tags)[true_false_arr == False]
 
         for i in range(len(real_tags)):
@@ -145,8 +142,14 @@ for t1 in max_mistakes_tags:
         val = all_tags_real_infer_dict[(t1,t2)]
         print("real tag: {}, inference tag: {}, value: {}".format(t1, t2, val))
 
-print("Test accuracy with train1 data:")
-print(sum(accuracy_list) / len(accuracy_list))
+true_infer_count = 0
+for tag in max_mistakes_tags:
+    true_infer_count += all_tags_real_infer_dict[(tag, tag)]
+
+accuracy = true_infer_count / sum(all_tags_real_infer_dict.values())
+
+print("Accuracy: {}".format(accuracy))
+
 total_time_end = time.time()
 print("total time:")
 print(total_time_end - total_time_start)
