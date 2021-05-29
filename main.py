@@ -4,7 +4,7 @@ from represent_input_with_features import represent_input_with_features
 from memm_viterbi import memm_viterbi
 import numpy as np
 import time
-
+import pickle
 
 class iter_count():
     def __init__(self):
@@ -42,6 +42,11 @@ feature2id.get_features()
 relevant_features_for_idx = dict()
 all_tags = statistics.tags_count_dict.keys()
 
+
+## save feature2id to disk
+with open('trained_weights/feature2id_train1.pkl', 'wb+') as output:
+    pickle.dump(feature2id, output, pickle.HIGHEST_PROTOCOL)
+##
 
 histories = dict()
 unique_hist_count = 0
@@ -131,19 +136,20 @@ with open(train_path) as f:
 inference_time_end = time.time()
 print("end inference phase, time: {}".format(inference_time_end - inference_time_start))
 print("----")
-all_max_mistakes_infer_counts = 0
 max_mistakes_tags = sorted(tags_infer_mistakes_cnt, key=tags_infer_mistakes_cnt.get, reverse=True)[:10]
-for t1 in max_mistakes_tags:
+for t1 in all_tags:
     for t2 in max_mistakes_tags:
         val = all_tags_real_infer_dict[(t1, t2)]
         print("real tag: {}, inference tag: {}, value: {}".format(t1, t2, val))
-        all_max_mistakes_infer_counts += val
 
 true_infer_count = 0
-for tag in max_mistakes_tags:
+all_inference_count = 0
+for tag in all_tags:
     true_infer_count += all_tags_real_infer_dict[(tag, tag)]
+    for tag2 in all_tags:
+        all_inference_count += all_tags_real_infer_dict[(tag, tag2)]
 
-accuracy = true_infer_count / all_max_mistakes_infer_counts
+accuracy = true_infer_count / all_inference_count
 accuracy = accuracy * 100
 
 print("Accuracy: {}".format(accuracy))
