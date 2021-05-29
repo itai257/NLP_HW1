@@ -2,11 +2,7 @@ from featurestatisticsclass import FeatureStatisticsClass
 from feature2idclass import Feature2IdClass
 from represent_input_with_features import represent_input_with_features
 from memm_viterbi import memm_viterbi
-from collections import OrderedDict
-from scipy.optimize import fmin_l_bfgs_b
-from calc_objective_per_iter import calc_objective_per_iter
 import numpy as np
-import pickle
 import time
 
 
@@ -135,18 +131,20 @@ with open(test_path1) as f:
 inference_time_end = time.time()
 print("end inference phase, time: {}".format(inference_time_end - inference_time_start))
 print("----")
-
+all_max_mistakes_infer_counts = 0
 max_mistakes_tags = sorted(tags_infer_mistakes_cnt, key=tags_infer_mistakes_cnt.get, reverse=True)[:10]
 for t1 in max_mistakes_tags:
     for t2 in max_mistakes_tags:
-        val = all_tags_real_infer_dict[(t1,t2)]
+        val = all_tags_real_infer_dict[(t1, t2)]
         print("real tag: {}, inference tag: {}, value: {}".format(t1, t2, val))
+        all_max_mistakes_infer_counts += val
 
 true_infer_count = 0
 for tag in max_mistakes_tags:
     true_infer_count += all_tags_real_infer_dict[(tag, tag)]
 
-accuracy = true_infer_count / sum(all_tags_real_infer_dict.values())
+accuracy = true_infer_count / all_max_mistakes_infer_counts
+accuracy = accuracy * 100
 
 print("Accuracy: {}".format(accuracy))
 
