@@ -119,7 +119,7 @@ for tag in all_tags:
     for tag2 in all_tags:
         all_tags_real_infer_dict[(tag, tag2)] = 0
 
-with open(test_path1) as f:
+with open(train_path) as f:
     for line in f:
         sen, real_tags = get_sentence_and_tags(line)
         infer_tags = memm_viterbi(all_tags, sen, weights_path, feature2id)
