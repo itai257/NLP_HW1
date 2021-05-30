@@ -10,8 +10,7 @@ def generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2i
 
     words_tags_to_generate = []
     with open(comp_path) as f:
-        for i in range(10):
-            line = f.readline()
+        for line in f:
             splited_words = line.replace('\n', ' ').split(' ')
             del splited_words[-1]
             infer_tags = memm_viterbi(all_tags, line, weights_path, feature2id)
@@ -39,7 +38,8 @@ def generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2i
             for line, line_comp in zip(f, f_comp):
                 splited_words = line.replace('\n', ' ').split(' ')
                 del splited_words[-1]
-                comp_words = line_comp.split(' ')
+                comp_words = line_comp.replace('\n', ' ').split(' ')
+                del comp_words[-1]
                 for word_idx in range(len(splited_words)):
                     cur_word, cur_tag = splited_words[word_idx].split('_')
                     if cur_word != comp_words[word_idx]:
