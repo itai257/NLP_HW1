@@ -136,10 +136,11 @@ inference_time_end = time.time()
 print("end inference phase, time: {}".format(inference_time_end - inference_time_start))
 print("----")
 max_mistakes_tags = sorted(tags_infer_mistakes_cnt, key=tags_infer_mistakes_cnt.get, reverse=True)[:10]
-for t1 in all_tags:
-    for t2 in max_mistakes_tags:
-        val = all_tags_real_infer_dict[(t1, t2)]
-        print("real tag: {}, inference tag: {}, value: {}".format(t1, t2, val))
+all_tags_to_iterate = max_mistakes_tags.copy() + list((set(all_tags) - set(max_mistakes_tags)))  # in order to first iterate max_mistakes_tags and then the rest
+for infer_tag in max_mistakes_tags:
+    for real_tag in all_tags_to_iterate:
+        val = all_tags_real_infer_dict[(real_tag, infer_tag)]
+        print("inference tag: {}, real tag: {}, value: {}".format(infer_tag, real_tag, val))
 
 true_infer_count = 0
 all_inference_count = 0
