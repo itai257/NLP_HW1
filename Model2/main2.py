@@ -44,7 +44,7 @@ all_tags = statistics.tags_count_dict.keys()
 
 
 ## save feature2id to disk
-with open('Model2/trained_weights/feature2id_train2.pkl', 'wb+') as output:
+with open('trained_weights2/feature2id_train2.pkl', 'wb+') as output:
     pickle.dump(feature2id, output, pickle.HIGHEST_PROTOCOL)
 ##
 
