@@ -1,5 +1,7 @@
 from memm_viterbi2 import memm_viterbi
 import pickle
+
+
 def generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2id_class_path):
 
     with open(feature2id_class_path, 'rb') as input:
@@ -50,8 +52,8 @@ def generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2i
     print("generated file is valid")
 
 
-weights_path = 'trained_weights/trained_weights_data_train2.pkl'
-#comp_path = "data/comp2.words"
+weights_path = 'trained_weights2/trained_weights_data_train2.pkl'
+# comp_path = "data/comp2.words"
 comp_path = "/datashare/hw1/comp2.words"
 generated_file_path = "generated_comp/comp2.wtag"   # where to dump the tagged file
 feature2id_class_path = 'trained_weights/feature2id_train2.pkl'

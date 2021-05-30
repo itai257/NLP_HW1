@@ -6,9 +6,11 @@ import numpy as np
 import time
 import pickle
 
+
 class iter_count():
     def __init__(self):
         self.n = 0
+
 
 def get_sentence_and_tags(line):
     words = []
@@ -21,6 +23,7 @@ def get_sentence_and_tags(line):
         tags.append(cur_tag)
     sentence = ' '.join(words)
     return sentence, tags
+
 
 threshold = 5
 lamda = 2.5
@@ -42,9 +45,8 @@ feature2id.get_features()
 relevant_features_for_idx = dict()
 all_tags = statistics.tags_count_dict.keys()
 
-
 ## save feature2id to disk
-with open('trained_weights2/feature2id_train2.pkl', 'wb+') as output:
+with open('trained_weights/feature2id_train2.pkl', 'wb+') as output:
     pickle.dump(feature2id, output, pickle.HIGHEST_PROTOCOL)
 ##
 
@@ -84,19 +86,19 @@ print("Starting training phase:")
 
 weights_path = 'trained_weights/trained_weights_data_train2.pkl'
 iteration_count = iter_count()
-#n_total_features = feature2id.n_total_features
-#w_0 = np.zeros(n_total_features, dtype=np.float64)
+# n_total_features = feature2id.n_total_features
+# w_0 = np.zeros(n_total_features, dtype=np.float64)
 ## """
-#args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
+# args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
 #
-#optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
-#weights = optimal_params[0]
+# optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
+# weights = optimal_params[0]
 #
-#with open(weights_path, 'wb') as f:
+# with open(weights_path, 'wb') as f:
 #    pickle.dump(optimal_params, f)
 #
-#print("weights:")
-#print(weights)
+# print("weights:")
+# print(weights)
 # """
 
 training_time_end = time.time()
@@ -106,10 +108,9 @@ print("----")
 inference_time_start = time.time()
 print("Starting inference phase:")
 
-
-## Testing:
-test_path2 = "/datashare/hw1/test2.wtag"
-#test_path2 = "data/test2.wtag"
+# # Testing:
+test_path2 = "/datashare/hw1/train2.wtag"
+# test_path2 = "data/test2.wtag"
 
 tags_infer_mistakes_cnt = dict()
 all_tags_real_infer_dict = dict()
@@ -136,7 +137,8 @@ inference_time_end = time.time()
 print("end inference phase, time: {}".format(inference_time_end - inference_time_start))
 print("----")
 max_mistakes_tags = sorted(tags_infer_mistakes_cnt, key=tags_infer_mistakes_cnt.get, reverse=True)[:10]
-all_tags_to_iterate = max_mistakes_tags.copy() + list((set(all_tags) - set(max_mistakes_tags)))  # in order to first iterate max_mistakes_tags and then the rest
+all_tags_to_iterate = max_mistakes_tags.copy() + list(
+    (set(all_tags) - set(max_mistakes_tags)))  # in order to first iterate max_mistakes_tags and then the rest
 for infer_tag in max_mistakes_tags:
     for real_tag in all_tags_to_iterate:
         val = all_tags_real_infer_dict[(real_tag, infer_tag)]
