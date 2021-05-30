@@ -34,7 +34,7 @@ class Feature2IdClass:
         self.lengths_tags_dict = OrderedDict()
 
     def get_features(self):
-        t = 10
+        t = 5
         self.n_words_tags = self.set_best_features_index(self.words_tags_dict,
                                                          self.feature_statistics.words_tags_count_dict, t)
         print("word tag pair features:", self.n_words_tags)
