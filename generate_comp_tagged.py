@@ -34,24 +34,25 @@ def generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2i
 
     # validating generated file
 
-    #with open(generated_file_path) as f:
-    #    with open(comp_path) as f_comp:
-    #        for line, line_comp in zip(f, f_comp):
-    #            splited_words = line.replace('\n', ' ').split(' ')
-    #            del splited_words[-1]
-    #            comp_words = line_comp.split(' ')
-    #            for word_idx in range(len(splited_words)):
-    #                cur_word, cur_tag = splited_words[word_idx].split('_')
-    #                if cur_word != comp_words[word_idx]:
-    #                    print("files are different")
-    #                    print("generated: {}".format(line))
-    #                    print("real: {}".format(line_comp))
-    #                    exit(1)
+    with open(generated_file_path) as f:
+        with open(comp_path) as f_comp:
+            for line, line_comp in zip(f, f_comp):
+                splited_words = line.replace('\n', ' ').split(' ')
+                del splited_words[-1]
+                comp_words = line_comp.split(' ')
+                for word_idx in range(len(splited_words)):
+                    cur_word, cur_tag = splited_words[word_idx].split('_')
+                    if cur_word != comp_words[word_idx]:
+                        print("files are different")
+                        print("generated: {}".format(line))
+                        print("real: {}".format(line_comp))
+                        exit(1)
+    print("generated file is valid")
 
 
 weights_path = 'trained_weights/trained_weights_data_train1.pkl'
-comp_path = "data/comp1.words"
-#comp_path = "/datashare/hw1/comp1.words"
+#comp_path = "data/comp1.words"
+comp_path = "/datashare/hw1/comp1.words"
 generated_file_path = "generated_comp/comp1.wtag"   # where to dump the tagged file
 feature2id_class_path = 'trained_weights/feature2id_train1.pkl'
 
