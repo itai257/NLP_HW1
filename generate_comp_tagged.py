@@ -8,7 +8,7 @@ def generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2i
         feature2id = pickle.load(input)
 
 
-    all_tags = feature2id.feature_statistics.tags_count_dict.keys()
+    all_tags = feature2id.statistics.tags_count_dict.keys()
 
     words_tags_to_generate = []
     with open(comp_path) as f:

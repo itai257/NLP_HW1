@@ -83,7 +83,7 @@ class Feature2IdClass:
     def set_best_features_index_2(self, f_dict, feature_statistics_dict, base_threshold):
         index = self.n_total_features
         for key in feature_statistics_dict:
-            threshold = base_threshold * (5 - len(key[1]))
+            threshold = base_threshold * (6 - len(key[1]))
             if key not in f_dict and (feature_statistics_dict[key] >= threshold):
                 f_dict[key] = index
                 index += 1

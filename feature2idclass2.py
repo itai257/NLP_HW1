@@ -5,7 +5,7 @@ from featurestatisticsclass2 import FeatureStatisticsClass
 class Feature2IdClass:
 
     def __init__(self, feature_statistics: FeatureStatisticsClass):
-        self.feature_statistics = feature_statistics  # statistics class, for each feature gives empirical counts
+        self.statistics = feature_statistics  # statistics class, for each feature gives empirical counts
 
         self.n_total_features = 0  # Total number of features accumulated
         self.n_words_tags = 0  # Number of Word\Tag pairs features
@@ -42,43 +42,55 @@ class Feature2IdClass:
     def get_features(self):
         t = 3
         self.n_words_tags = self.set_best_features_index(self.words_tags_dict,
-                                                         self.feature_statistics.words_tags_count_dict, t)
+                                                         self.statistics.words_tags_count_dict, t)
         self.n_suffixes_tags = self.set_best_features_index_2(self.suffixes_tags_dict,
-                                                              self.feature_statistics.suffixes_tags_count_dict, t)
+                                                              self.statistics.suffixes_tags_count_dict, t)
         self.n_prefixes_tags = self.set_best_features_index_2(self.prefixes_tags_dict,
-                                                              self.feature_statistics.prefixes_tags_count_dict, t)
+                                                              self.statistics.prefixes_tags_count_dict, t)
         self.n_tags_tuples = self.set_best_features_index(self.tags_tuples_dict,
-                                                          self.feature_statistics.tags_tuples_count_dict, t)
+                                                          self.statistics.tags_tuples_count_dict, t)
         self.n_tags_pairs = self.set_best_features_index(self.tags_pairs_dict,
-                                                         self.feature_statistics.tags_pairs_count_dict, t)
+                                                         self.statistics.tags_pairs_count_dict, t)
         self.n_tags = self.set_best_features_index(self.tags_dict,
-                                                   self.feature_statistics.tags_count_dict, t)
-        print("word tag pair features:", self.n_words_tags)
-        print("suffix tag pair features:", self.n_suffixes_tags)
-        print("prefix tag pair features:", self.n_prefixes_tags)
-        print("tag tuples features:", self.n_tags_tuples)
-        print("tag pair features:", self.n_tags_pairs)
-        print("tag features:", self.n_tags)
+                                                   self.statistics.tags_count_dict, t)
+        print("word tag pair features: {} out of {}".format(self.n_words_tags,
+                                                            len(self.statistics.words_tags_count_dict)))
+        print("suffix tag pair features:{} out of {}".format(self.n_suffixes_tags,
+                                                             len(self.statistics.suffixes_tags_count_dict)))
+        print("prefix tag pair features:{} out of {}".format(self.n_prefixes_tags,
+                                                             len(self.statistics.prefixes_tags_count_dict)))
+        print("tag tuple features:{} out of {}".format(self.n_tags_tuples,
+                                                       len(self.statistics.tags_tuples_count_dict)))
+        print("tag pair features:{} out of {}".format(self.n_tags_pairs,
+                                                      len(self.statistics.tags_pairs_count_dict)))
+        print("tag features:{} out of {}".format(self.n_tags,
+                                                 len(self.statistics.tags_count_dict)))
 
         self.n_prev_words_tags = self.set_best_features_index(self.prev_words_tags_dict,
-                                                              self.feature_statistics.prev_words_tags_count_dict, t)
+                                                              self.statistics.prev_words_tags_count_dict, t)
         self.n_next_words_tags = self.set_best_features_index(self.next_words_tags_dict,
-                                                              self.feature_statistics.next_words_tags_count_dict, t)
-        print("previous word tag pair features:", self.n_words_tags)
-        print("next word tag pair features:", self.n_words_tags)
+                                                              self.statistics.next_words_tags_count_dict, t)
+        print("previous word tag pair features: {} out of {}".format(self.n_prev_words_tags,
+                                                                     len(self.statistics.prev_words_tags_count_dict)))
+        print("next word tag pair features: {} out of {}".format(self.n_next_words_tags,
+                                                                 len(self.statistics.next_words_tags_count_dict)))
 
         self.n_uppercase_tags = self.set_best_features_index(self.uppercase_tags_dict,
-                                                             self.feature_statistics.upper_case_tags_count_dict, t)
+                                                             self.statistics.upper_case_tags_count_dict, t)
         self.n_special_char_tags = self.set_best_features_index(self.special_char_tags_dict,
-                                                                self.feature_statistics.special_char_tags_count_dict, t)
+                                                                self.statistics.special_char_tags_count_dict, t)
         self.n_numeric_tags = self.set_best_features_index(self.numeric_tags_dict,
-                                                           self.feature_statistics.numeric_tags_count_dict, t)
+                                                           self.statistics.numeric_tags_count_dict, t)
         self.n_lengths_tags = self.set_best_features_index(self.lengths_tags_dict,
-                                                           self.feature_statistics.lengths_tags_count_dict, t)
-        print("has-uppercase tag pair features:", self.n_uppercase_tags)
-        print("has-special tag features:", self.n_special_char_tags)
-        print("is-numeric tag features:", self.n_numeric_tags)
-        print("length tag features:", self.n_lengths_tags)
+                                                           self.statistics.lengths_tags_count_dict, t)
+        print("has-uppercase tag pair features: {} out of {}".format(self.n_uppercase_tags,
+                                                                     len(self.statistics.upper_case_tags_count_dict)))
+        print("has-special tag features: {} out of {}".format(self.n_special_char_tags,
+                                                              len(self.statistics.special_char_tags_count_dict)))
+        print("is-numeric tag features: {} out of {}".format(self.n_numeric_tags,
+                                                             len(self.statistics.numeric_tags_count_dict)))
+        print("length tag features: {} out of {}".format(self.n_lengths_tags,
+                                                         len(self.statistics.lengths_tags_count_dict)))
 
         print("total features:", self.n_total_features)
 

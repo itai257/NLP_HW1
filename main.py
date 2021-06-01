@@ -114,7 +114,7 @@ print("Starting inference phase:")
 
 # Testing:
 test_path1 = "/datashare/hw1/test1.wtag"
-# test_path1 = "data/test1.wtag"
+test_path1 = "data/test1.wtag"
 
 tags_infer_mistakes_cnt = dict()
 all_tags_real_infer_dict = dict()
