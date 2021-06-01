@@ -28,21 +28,20 @@ def get_sentence_and_tags(line):
     return sentence, tags
 
 
-threshold = 5
 lamda = 2.5
 
 total_time_start = time.time()
 pre_process_time_start = time.time()
 print("Starting pre-process phase:")
 train_path = "/datashare/hw1/train2.wtag"
-# train_path = "data/train2.wtag"
+train_path = "data/train2.wtag"
 
 # Statistics
 statistics = FeatureStatisticsClass()
-statistics.get_word_tag_pair_count(train_path)
+statistics.get_features(train_path)
 
 # feature2id
-feature2id = Feature2IdClass(statistics, threshold)
+feature2id = Feature2IdClass(statistics)
 feature2id.get_features()
 
 relevant_features_for_idx = dict()
@@ -57,12 +56,15 @@ histories = dict()
 unique_hist_count = 0
 with open(train_path) as f:
     for line in f:
-        splited_words = line.replace('\n', ' ').split(' ')
-        del splited_words[-1]
-        pptag, ptag = '*', '*'
-        for word_idx in range(len(splited_words)):
+        splited_words = line.replace('\n', ' ').split(' ')[:-1]
+        pp_tag, p_tag = '*', '*'
+        p_word = ''
+        line_len = len(splited_words)
+        for word_idx in range(line_len):
             cur_word, cur_tag = splited_words[word_idx].split('_')
-            h = (cur_word, pptag, ptag, cur_tag, '', '')
+            if word_idx < line_len - 1:
+                n_word, next_tag = splited_words[word_idx+1].split('_')
+            h = (cur_word, pp_tag, p_tag, cur_tag, n_word, p_word)
             if h not in histories:
                 histories[h] = 1
                 relevant_features_for_idx[h] = (represent_input_with_features(h, feature2id))
@@ -70,12 +72,13 @@ with open(train_path) as f:
             else:
                 histories[h] += 1
 
-            pptag = ptag
-            ptag = cur_tag
+            pp_tag = p_tag
+            p_tag = cur_tag
+            p_word = cur_word
 print(unique_hist_count)
 rel_features_for_all_tags_hist = dict()
 for hist, reps in histories.items():
-    for tag in all_tags:  # ToDo: need to find more tags ?
+    for tag in all_tags:
         h = (hist[0], hist[1], hist[2], tag, hist[4], hist[5])
         if h not in rel_features_for_all_tags_hist:
             rel_features_for_all_tags_hist[h] = (represent_input_with_features(h, feature2id))

@@ -53,15 +53,15 @@ def generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2i
 
 
 weights_path = 'trained_weights/trained_weights_data_train1.pkl'
-# comp_path = "data/comp1.words"
 comp_path = "/datashare/hw1/comp1.words"
+comp_path = "data/comp2.words"
 generated_file_path = "generated_comp/comp1.wtag"   # where to dump the tagged file
 feature2id_class_path = 'trained_weights/feature2id_train1.pkl'
 generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2id_class_path)
 
 weights_path = 'trained_weights/trained_weights_data_train2.pkl'
-# comp_path = "data/comp1.words"
 comp_path = "/datashare/hw1/comp2.words"
+comp_path = "data/comp2.words"
 generated_file_path = "generated_comp/comp2.wtag"   # where to dump the tagged file
 feature2id_class_path = 'trained_weights/feature2id_train2.pkl'
 generate_comp_tagged(weights_path, comp_path, generated_file_path, feature2id_class_path)

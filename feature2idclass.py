@@ -56,7 +56,7 @@ class Feature2IdClass:
         print("tag features:", self.n_tags)
 
         self.n_capitals_tags = self.set_best_features_index(self.capitals_tags_dict,
-                                                            self.feature_statistics.capitals_tags_count_dict, t)
+                                                            self.feature_statistics.upper_case_tags_count_dict, t)
         print("has-capital tag pair features:", self.n_capitals_tags)
         self.n_first_tags = self.set_best_features_index(self.first_tags_dict,
                                                          self.feature_statistics.first_tags_count_dict, t)

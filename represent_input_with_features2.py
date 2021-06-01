@@ -42,16 +42,14 @@ def represent_input_with_features(history, features2id: Feature2IdClass):
     if ctag in features2id.tags_dict:
         features.append(features2id.tags_dict[ctag])
 
-    if ptag != '*':
-        if word.lower() != word and ctag in features2id.capitals_tags_dict:
-            features.append(features2id.capitals_tags_dict[ctag])
+    if ptag != '*' and not word.islower() and ctag in features2id.uppercase_tags_dict:
+        features.append(features2id.uppercase_tags_dict[ctag])
 
-        if pptag == '*' and ctag in features2id.second_tags_dict:
-            features.append(features2id.second_tags_dict[ctag])
+    if not word.isalnum() and ctag in features2id.special_char_tags_dict:
+        features.append(features2id.special_char_tags_dict[ctag])
 
-    else:
-        if ctag in features2id.first_tags_dict:
-            features.append(features2id.first_tags_dict[ctag])
+    if word.isnumeric() and ctag in features2id.numeric_tags_dict:
+        features.append(features2id.numeric_tags_dict[ctag])
 
     w_len = len(word)
     if (w_len, ctag) in features2id.lengths_tags_dict:
