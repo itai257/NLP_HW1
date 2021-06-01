@@ -33,7 +33,7 @@ total_time_start = time.time()
 pre_process_time_start = time.time()
 print("Starting pre-process phase:")
 train_path = "/datashare/hw1/train1.wtag"
-# train_path = "data/train1.wtag"
+train_path = "data/train1.wtag"
 
 # Statistics
 statistics = FeatureStatisticsClass()
