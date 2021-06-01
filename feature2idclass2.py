@@ -92,7 +92,7 @@ class Feature2IdClass:
         print("length tag features: {} out of {}".format(self.n_lengths_tags,
                                                          len(self.statistics.lengths_tags_count_dict)))
 
-        print("total features:", self.n_total_features)
+        print("total features: {} out of {}".format(self.n_total_features, self.statistics.n_total_features))
 
     def set_best_features_index(self, f_dict, feature_statistics_dict, threshold):
         index = self.n_total_features
