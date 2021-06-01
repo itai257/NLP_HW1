@@ -33,7 +33,7 @@ total_time_start = time.time()
 pre_process_time_start = time.time()
 print("Starting pre-process phase:")
 train_path = "/datashare/hw1/train1.wtag"
-train_path = "data/train1.wtag"
+# train_path = "data/train1.wtag"
 
 # Statistics
 statistics = FeatureStatisticsClass()
@@ -114,7 +114,7 @@ print("Starting inference phase:")
 
 # Testing:
 test_path1 = "/datashare/hw1/test1.wtag"
-test_path1 = "data/test1.wtag"
+# test_path1 = "data/test1.wtag"
 
 tags_infer_mistakes_cnt = dict()
 all_tags_real_infer_dict = dict()

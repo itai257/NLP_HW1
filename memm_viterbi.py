@@ -38,7 +38,7 @@ def memm_viterbi(all_tags, sentence, weights_path, feature2id):
     pai = dict()
     bp = dict()
     for v_tag in all_tags:
-        h = (sentence_words[0], t, u_tag, v_tag, sentence_words[1], '*', 0)
+        h = (sentence_words[0], t, u_tag, v_tag, sentence_words[1], '*')
         if h not in relevant_features_for_idx:
             relevant_features_for_idx[h] = represent_input_with_features(h, feature2id)
 
@@ -48,7 +48,7 @@ def memm_viterbi(all_tags, sentence, weights_path, feature2id):
         p_numerator = np.exp(v_mul_f_xi_yi)  # exp(v * f(xi,yi))
         p_denominator = 0
         for norm_tag in all_tags:
-            h_norm = (sentence_words[0], t, u_tag, norm_tag, sentence_words[1], '*', 0)
+            h_norm = (sentence_words[0], t, u_tag, norm_tag, sentence_words[1], '*')
             if h_norm not in relevant_features_for_idx:
                 relevant_features_for_idx[h_norm] = represent_input_with_features(h_norm, feature2id)
 
@@ -72,7 +72,7 @@ def memm_viterbi(all_tags, sentence, weights_path, feature2id):
     t = '*'
     for u_tag in all_tags:
         for v_tag in all_tags:
-            h = (sentence_words[1], t, u_tag, v_tag, sentence_words[2], sentence_words[0], 1)
+            h = (sentence_words[1], t, u_tag, v_tag, sentence_words[2], sentence_words[0])
             if h not in relevant_features_for_idx:
                 relevant_features_for_idx[h] = represent_input_with_features(h, feature2id)
 
@@ -82,7 +82,7 @@ def memm_viterbi(all_tags, sentence, weights_path, feature2id):
             p_numerator = np.exp(v_mul_f_xi_yi)  # exp(v * f(xi,yi))
             p_denominator = 0
             for norm_tag in all_tags:
-                h_norm = (sentence_words[1], t, u_tag, norm_tag, sentence_words[2], sentence_words[0], 1)
+                h_norm = (sentence_words[1], t, u_tag, norm_tag, sentence_words[2], sentence_words[0])
                 if h_norm not in relevant_features_for_idx:
                     relevant_features_for_idx[h_norm] = represent_input_with_features(h_norm, feature2id)
 
@@ -99,17 +99,16 @@ def memm_viterbi(all_tags, sentence, weights_path, feature2id):
 
     if len(sentence_words) == 3:
         return get_tag_sequence(pai_list, bp_list)
-    #
 
     for idx in range(2, len(sentence_words) - 1):
         pai = dict()
         bp = dict()
-        t_list, u_list = get_possible_last_tags_lists(pai_list[idx - 1])
+        t_list, u_list = get_possible_last_tags_lists(pai_list[idx-1])
         for u_tag in u_list:
             for v_tag in all_tags:
                 prob_lst_for_t = dict()
                 for t in t_list:
-                    h = (sentence_words[idx], t, u_tag, v_tag, sentence_words[idx + 1], sentence_words[idx - 1], idx)
+                    h = (sentence_words[idx], t, u_tag, v_tag, sentence_words[idx+1], sentence_words[idx-1])
 
                     if h not in relevant_features_for_idx:
                         relevant_features_for_idx[h] = represent_input_with_features(h, feature2id)
@@ -120,8 +119,7 @@ def memm_viterbi(all_tags, sentence, weights_path, feature2id):
                     p_numerator = np.exp(v_mul_f_xi_yi)  # exp(v * f(xi,yi))
                     p_denominator = 0
                     for norm_tag in all_tags:
-                        h_norm = (
-                        sentence_words[idx], t, u_tag, norm_tag, sentence_words[idx + 1], sentence_words[idx - 1], idx)
+                        h_norm = (sentence_words[idx], t, u_tag, norm_tag, sentence_words[idx+1], sentence_words[idx-1])
                         if h_norm not in relevant_features_for_idx:
                             relevant_features_for_idx[h_norm] = represent_input_with_features(h_norm, feature2id)
 
