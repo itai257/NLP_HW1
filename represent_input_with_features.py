@@ -12,13 +12,13 @@ def represent_input_with_features(history, features2id: Feature2IdClass):
     if (word, ctag) in features2id.words_tags_dict:
         features.append(features2id.words_tags_dict[(word, ctag)])
     for i in range(2, 5):
-        suffix = word[-i:]
-        prefix = word[:i]
-        if len(word) > len(suffix):
+        if len(word) > i:
+            suffix = word[-i:]
+            prefix = word[:i]
             if (suffix, ctag) in features2id.suffixes_tags_dict:
                 features.append(features2id.suffixes_tags_dict[(suffix, ctag)])
-        if (prefix, ctag) in features2id.prefixes_tags_dict:
-            features.append(features2id.prefixes_tags_dict[(prefix, ctag)])
+            if (prefix, ctag) in features2id.prefixes_tags_dict:
+                features.append(features2id.prefixes_tags_dict[(prefix, ctag)])
     if (pptag, ptag, ctag) in features2id.tags_tuples_dict:
         features.append(features2id.tags_tuples_dict[(pptag, ptag, ctag)])
     if (ptag, ctag) in features2id.tags_pairs_dict:

@@ -28,7 +28,7 @@ class FeatureStatisticsClass:
         self.special_char_tags_count_dict = OrderedDict()
         self.numeric_tags_count_dict = OrderedDict()
         self.lengths_tags_count_dict = OrderedDict()
-        self.indexes_tags_count_dict = OrderedDict()
+        # self.indexes_tags_count_dict = OrderedDict()
 
     def get_features(self, file_path):
         with open(file_path) as f:
@@ -45,25 +45,10 @@ class FeatureStatisticsClass:
                             dict_insert((cur_suffix, cur_tag), self.suffixes_tags_count_dict)
                             cur_prefix = cur_word[:suffix_length]
                             dict_insert((cur_prefix, cur_tag), self.prefixes_tags_count_dict)
-
                     dict_insert((pp_tag, p_tag, cur_tag), self.tags_tuples_count_dict)
                     dict_insert((p_tag, cur_tag), self.tags_pairs_count_dict)
                     dict_insert(cur_tag, self.tags_count_dict)
 
-                    """if (pp_tag, p_tag, cur_tag) not in self.tags_tuples_count_dict:
-                        self.tags_tuples_count_dict[(pp_tag, p_tag, cur_tag)] = 1
-                    else:
-                        self.tags_tuples_count_dict[(pp_tag, p_tag, cur_tag)] += 1
-
-                    if (p_tag, cur_tag) not in self.tags_pairs_count_dict:
-                        self.tags_pairs_count_dict[(p_tag, cur_tag)] = 1
-                    else:
-                        self.tags_pairs_count_dict[(p_tag, cur_tag)] += 1
-
-                    if cur_tag not in self.tags_count_dict:
-                        self.tags_count_dict[cur_tag] = 1
-                    else:
-                        self.tags_count_dict[cur_tag] += 1"""
                     if word_idx != 0:
                         dict_insert((p_word, cur_tag), self.prev_words_tags_count_dict)
                         dict_insert((cur_word, p_tag), self.next_words_tags_count_dict)
@@ -72,15 +57,11 @@ class FeatureStatisticsClass:
                     if not cur_word.islower():
                         if p_tag != '*':    # Uppercase but not first in sentence.
                             dict_insert(cur_tag, self.upper_case_tags_count_dict)
-
                     if not cur_word.isalnum():
                         dict_insert(cur_tag, self.special_char_tags_count_dict)
-
                     if cur_word.isnumeric():
                         dict_insert(cur_tag, self.numeric_tags_count_dict)
-
-                    w_len = len(cur_word)
-                    dict_insert((w_len, cur_tag), self.lengths_tags_count_dict)
+                    dict_insert((len(cur_word), cur_tag), self.lengths_tags_count_dict)
 
                     pp_tag = p_tag
                     p_tag = cur_tag
@@ -100,5 +81,5 @@ class FeatureStatisticsClass:
         self.n_total_features += len(self.special_char_tags_count_dict)
         self.n_total_features += len(self.numeric_tags_count_dict)
         self.n_total_features += len(self.lengths_tags_count_dict)
-        self.n_total_features += len(self.indexes_tags_count_dict)
+        # self.n_total_features += len(self.indexes_tags_count_dict)
 

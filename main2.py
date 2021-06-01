@@ -34,7 +34,7 @@ total_time_start = time.time()
 pre_process_time_start = time.time()
 print("Starting pre-process phase:")
 train_path = "/datashare/hw1/train2.wtag"
-train_path = "data/train2.wtag"
+# train_path = "data/train2.wtag"
 
 # Statistics
 statistics = FeatureStatisticsClass()
@@ -57,11 +57,11 @@ unique_hist_count = 0
 with open(train_path) as f:
     for line in f:
         splited_words = line.replace('\n', ' ').split(' ')[:-1]
-        pp_tag, p_tag = '*', '*'
-        p_word = ''
+        pp_tag, p_tag, p_word = '*', '*',
         line_len = len(splited_words)
         for word_idx in range(line_len):
             cur_word, cur_tag = splited_words[word_idx].split('_')
+            n_word = ''
             if word_idx < line_len - 1:
                 n_word, next_tag = splited_words[word_idx+1].split('_')
             h = (cur_word, pp_tag, p_tag, cur_tag, n_word, p_word)
@@ -114,9 +114,9 @@ print("----")
 inference_time_start = time.time()
 print("Starting inference phase:")
 
-# # Testing:
+# Testing:
 test_path2 = "/datashare/hw1/train2.wtag"
-# test_path2 = "data/test2.wtag"
+# test_path2 = "data/train2.wtag"
 
 tags_infer_mistakes_cnt = dict()
 all_tags_real_infer_dict = dict()
