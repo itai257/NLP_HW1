@@ -57,7 +57,7 @@ unique_hist_count = 0
 with open(train_path) as f:
     for line in f:
         splited_words = line.replace('\n', ' ').split(' ')[:-1]
-        pp_tag, p_tag, p_word = '*', '*',
+        pp_tag, p_tag, p_word = '*', '*', ''
         line_len = len(splited_words)
         for word_idx in range(line_len):
             cur_word, cur_tag = splited_words[word_idx].split('_')
