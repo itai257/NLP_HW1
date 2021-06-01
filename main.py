@@ -25,6 +25,7 @@ def get_sentence_and_tags(line):
     sentence = ' '.join(words)
     return sentence, tags
 
+
 threshold = 5
 lamda = 2.5
 
@@ -32,14 +33,14 @@ total_time_start = time.time()
 pre_process_time_start = time.time()
 print("Starting pre-process phase:")
 train_path = "/datashare/hw1/train1.wtag"
-# train_path = "data/train1.wtag"
+train_path = "data/train1.wtag"
 
 # Statistics
 statistics = FeatureStatisticsClass()
-statistics.get_word_tag_pair_count(train_path)
+statistics.get_features(train_path)
 
 # feature2id
-feature2id = Feature2IdClass(statistics, threshold)
+feature2id = Feature2IdClass(statistics)
 feature2id.get_features()
 
 relevant_features_for_idx = dict()
@@ -87,19 +88,20 @@ print("Starting training phase:")
 
 weights_path = 'trained_weights/trained_weights_data_train1.pkl'
 iteration_count = iter_count()
-#n_total_features = feature2id.n_total_features
-#w_0 = np.zeros(n_total_features, dtype=np.float64)
-## """
-#args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
-#
-# optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
-#weights = optimal_params[0]
-#
-#with open(weights_path, 'wb') as f:
-#    pickle.dump(optimal_params, f)
-#
-#print("weights:")
-#print(weights)
+# """
+n_total_features = feature2id.n_total_features
+w_0 = np.zeros(n_total_features, dtype=np.float64)
+
+args = (feature2id, histories, relevant_features_for_idx, all_tags, rel_features_for_all_tags_hist, iteration_count, lamda)
+
+optimal_params = fmin_l_bfgs_b(func=calc_objective_per_iter, x0=w_0, args=args, maxiter=1000, iprint=50)
+weights = optimal_params[0]
+
+with open(weights_path, 'wb') as f:
+    pickle.dump(optimal_params, f)
+
+print("weights:")
+print(weights)
 # """
 
 training_time_end = time.time()

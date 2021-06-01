@@ -100,3 +100,5 @@ class FeatureStatisticsClass:
         self.n_total_features += len(self.special_char_tags_count_dict)
         self.n_total_features += len(self.numeric_tags_count_dict)
         self.n_total_features += len(self.lengths_tags_count_dict)
+        self.n_total_features += len(self.indexes_tags_count_dict)
+
